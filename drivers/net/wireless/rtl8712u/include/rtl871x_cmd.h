@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
  *
  *
- ******************************************************************************/
+ ******************************************************************************/ 
 #ifndef __RTL871X_CMD_H_
 #define __RTL871X_CMD_H_
 
@@ -241,11 +241,11 @@ Caller Mode: AP, Ad-HoC, Infra
 
 Notes: To ask RTL8711 performing site-survey
 
-Command-Event Mode
+Command-Event Mode 
 
 */
 struct sitesurvey_parm {
-	sint passive_mode;	//active: 1, passive: 0
+	sint passive_mode;	//active: 1, passive: 0 
 	sint bsslimit;	// 1 ~ 48
 	sint	ss_ssidlen;
 	u8 	ss_ssid[IW_ESSID_MAX_SIZE + 1];
@@ -285,12 +285,12 @@ struct setkey_parm {
 };
 
 /*
-When in AP or Ad-Hoc mode, this is used to
+When in AP or Ad-Hoc mode, this is used to 
 allocate an sw/hw entry for a newly associated sta.
 
 Command
 
-when shared key ==> algorithm/keyid
+when shared key ==> algorithm/keyid 
 
 */
 struct set_stakey_parm {
@@ -400,6 +400,34 @@ struct setdatarate_parm {
 	u8	mac_id;
 	u8	datarates[NumRates];
 #endif
+};
+
+typedef enum _RT_CHANNEL_DOMAIN
+{
+ 	RT_CHANNEL_DOMAIN_FCC = 0,
+ 	RT_CHANNEL_DOMAIN_IC = 1,
+	RT_CHANNEL_DOMAIN_ETSI = 2,
+ 	RT_CHANNEL_DOMAIN_SPAIN = 3,
+ 	RT_CHANNEL_DOMAIN_FRANCE = 4,
+ 	RT_CHANNEL_DOMAIN_MKK = 5,
+ 	RT_CHANNEL_DOMAIN_MKK1 = 6,
+ 	RT_CHANNEL_DOMAIN_ISRAEL = 7,
+	RT_CHANNEL_DOMAIN_TELEC = 8,
+ 	RT_CHANNEL_DOMAIN_MIC = 9,    // Be compatible with old channel plan. No good!
+ 	RT_CHANNEL_DOMAIN_GLOBAL_DOAMIN = 10,  // Be compatible with old channel plan. No good!
+ 	RT_CHANNEL_DOMAIN_WORLD_WIDE_13 = 11,  // Be compatible with old channel plan. No good!
+ 	RT_CHANNEL_DOMAIN_TELEC_NETGEAR = 12,  // Be compatible with old channel plan. No good!
+ 	RT_CHANNEL_DOMAIN_NCC = 13,
+ 	RT_CHANNEL_DOMAIN_5G = 14,
+ 	RT_CHANNEL_DOMAIN_5G_40M = 15,
+ //===== Add new channel plan above this line===============//
+ 	RT_CHANNEL_DOMAIN_MAX,
+}RT_CHANNEL_DOMAIN, *PRT_CHANNEL_DOMAIN;
+
+
+struct SetChannelPlan_param
+{
+ RT_CHANNEL_DOMAIN ChannelPlan;
 };
 
 /*
@@ -524,7 +552,7 @@ struct getrfintfs_parm {
 /*
 	Notes: This command is used for H2C/C2H loopback testing
 
-	mac[0] == 0
+	mac[0] == 0 
 	==> CMD mode, return H2C_SUCCESS.
 	The following condition must be ture under CMD mode
 		mac[1] == mac[4], mac[2] == mac[3], mac[0]=mac[5]= 0;
@@ -565,7 +593,7 @@ struct getrfintfs_parm {
 		w0		=  	swap32(w0);
 		b0		= 	b1
 		s2		= 	s0 + event.mac[2]
-		b1		= 	b0
+		b1		= 	b0 
 		w1		=	swap32(w1) - event.mac[2];	
 	
 		parm->mac[3] is the total event counts that host requested.
@@ -921,7 +949,7 @@ extern u8 geth2clbk_hdl(u8 *pbuf);
 
 /*
 
-Result:
+Result: 
 0x00: success
 0x01: sucess, and check Response.
 0x02: cmd ignored due to duplicated sequcne number
@@ -953,6 +981,7 @@ extern u8 joinbss_cmd(_adapter  *padapter, struct wlan_network* pnetwork);
 extern u8 disassoc_cmd(_adapter  *padapter);
 extern u8 setopmode_cmd(_adapter  *padapter, NDIS_802_11_NETWORK_INFRASTRUCTURE networktype);
 extern u8 setdatarate_cmd(_adapter  *padapter, u8 *rateset);
+extern u8 set_chplan_cmd(_adapter  *padapter, int chplan);
 extern u8 setbasicrate_cmd(_adapter  *padapter, u8 *rateset);
 extern u8 setbbreg_cmd(_adapter * padapter, u8 offset, u8 val);
 extern u8 setrfreg_cmd(_adapter * padapter, u8 offset, u32 val);

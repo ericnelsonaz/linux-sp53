@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
  *
  *
- ******************************************************************************/
+ ******************************************************************************/ 
 #define _RTL871X_IOCTL_LINUX_C_
 
 #include <drv_conf.h>
@@ -1016,7 +1016,7 @@ _func_enter_;
 		} else {
 			// Yes ! We can set it !!!
              RT_TRACE(_module_rtl871x_ioctl_os_c, _drv_notice_, (" Set to channel = %d\n", channel));
-			padapter->registrypriv.channel=channel; 
+			padapter->registrypriv.channel=channel;  
 		}
 	}
 
@@ -1386,8 +1386,8 @@ _func_exit_;
 	return 0;
 }
 
-static int r8711_wx_get_rate(struct net_device *dev,
-			     struct iw_request_info *info,
+static int r8711_wx_get_rate(struct net_device *dev, 
+			     struct iw_request_info *info, 
 			     union iwreq_data *wrqu, char *extra);
 
 static int r871x_wx_set_priv(struct net_device *dev,
@@ -1440,7 +1440,7 @@ static int r871x_wx_set_priv(struct net_device *dev,
 	#endif
 	if(0 == strcasecmp(ext,"RSSI")){
 		//Return received signal strength indicator in -db for current AP
-		//<ssid> Rssi xx
+		//<ssid> Rssi xx 
 		struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);	
 		struct	wlan_network	*pcur_network = &pmlmepriv->cur_network;
 		//static u8 xxxx;
@@ -1457,7 +1457,7 @@ static int r871x_wx_set_priv(struct net_device *dev,
 		
 	}else if(0 == strcasecmp(ext,"LINKSPEED")){
 		//Return link speed in MBPS
-		//LinkSpeed xx
+		//LinkSpeed xx 
 		union iwreq_data wrqd;
 		int ret_inner;
 		int mbps;
@@ -1473,7 +1473,7 @@ static int r871x_wx_set_priv(struct net_device *dev,
 		
 	}else if(0 == strcasecmp(ext,"MACADDR")){
 		//Return mac address of the station
-		//Macaddr = xx.xx.xx.xx.xx.xx
+		//Macaddr = xx.xx.xx.xx.xx.xx 
 		sprintf(ext,
 			"MACADDR = %02x.%02x.%02x.%02x.%02x.%02x",
 			*(dev->dev_addr),*(dev->dev_addr+1),*(dev->dev_addr+2),
@@ -1519,7 +1519,7 @@ static int r871x_wx_set_priv(struct net_device *dev,
 		
 	}else{
 		#ifdef DEBUG_RTW_WX_SET_PRIV
-		printk("%s: %s unknowned req=%s\n",
+		printk("%s: %s unknowned req=%s\n", 
 		__FUNCTION__,dev->name, ext_dbg);
 		#endif
 		goto FREE_EXT;
@@ -1530,7 +1530,7 @@ static int r871x_wx_set_priv(struct net_device *dev,
 		ret = -EFAULT;
 
 	#ifdef DEBUG_RTW_WX_SET_PRIV
-	printk("%s: %s req=%s rep=%s\n",
+	printk("%s: %s req=%s rep=%s\n", 
 	__FUNCTION__,dev->name, ext_dbg ,ext);
 	#endif
 
@@ -1743,7 +1743,7 @@ _func_enter_;
 	    (pmlmepriv->sitesurveyctrl.traffic_busy == _TRUE))
 	{
 		goto exit;
-	}
+	} 
 
 #if WIRELESS_EXT >= 17
 	if (wrqu->data.length == sizeof(struct iw_scan_req))
@@ -2372,7 +2372,7 @@ _func_enter_;
 			return -EINVAL;
 		key--;
 		keyindex_provided = 1;
-	}
+	} 
 	else
 	{
 		keyindex_provided = 0;
@@ -2730,7 +2730,7 @@ static int r871x_wx_set_enc_ext(struct net_device *dev,
 
 	switch (pext->alg) {
 		case IW_ENCODE_ALG_NONE:
-		//todo: remove key
+		//todo: remove key 
 		//remove = 1;	
 			alg_name = "none";
 			break;
@@ -2773,7 +2773,7 @@ static int r871x_wx_set_enc_ext(struct net_device *dev,
 
 	if (pencoding->flags & IW_ENCODE_DISABLED)
 	{		
-		//todo: remove key
+		//todo: remove key 
 		//remove = 1;		
 	}	
 	
@@ -3096,7 +3096,7 @@ static int r871x_mp_ioctl_hdl(struct net_device *dev,
 		//todo:check status, BytesNeeded, etc.
 	}
 	else {
-		printk("r871x_mp_ioctl_hdl(): err!, subcode=%d, oid=%d, handler=%p\n",
+		printk("r871x_mp_ioctl_hdl(): err!, subcode=%d, oid=%d, handler=%p\n", 
 			poidparam->subcode, phandler->oid, phandler->handler);
 		ret = -EFAULT;
 		goto _r871x_mp_ioctl_hdl_exit;
@@ -3184,8 +3184,8 @@ static int r871x_get_ap_info(struct net_device *dev,
 
 		pnetwork = LIST_CONTAINOR(plist, struct wlan_network, list);
 
-		//if(hwaddr_aton_i(pdata->pointer, bssid))
-		if(hwaddr_aton_i(data, bssid))
+		//if(hwaddr_aton_i(pdata->pointer, bssid)) 
+		if(hwaddr_aton_i(data, bssid)) 
 		{			
 			printk("Invalid BSSID '%s'.\n", (u8*)data);
 			return -EINVAL;
@@ -3259,6 +3259,38 @@ exit:
 	return ret;
 }
 
+static int r871x_set_chplan(struct net_device *dev,
+				struct iw_request_info *info,
+				union iwreq_data *wrqu, char *extra)
+{
+	int ret = 0;
+	_adapter *padapter = netdev_priv(dev);
+	struct iw_point *pdata = &wrqu->data;
+	int ch_plan = -1;
+
+	printk("+r871x_set_chplan\n");
+
+	if((padapter->bDriverStopped) || (pdata==NULL))
+	{
+		ret= -EINVAL;
+		goto exit;
+	}
+
+	//pdata->length = 0;
+	//pdata->flags = 0;
+
+	//_memcpy(&padapter->pid, pdata->pointer, sizeof(int));
+	//if(copy_from_user(&ch_plan, pdata->pointer, sizeof(int)))
+
+	ch_plan=(int)*extra;
+	set_chplan_cmd(padapter, ch_plan);
+
+
+exit:
+
+	return ret;
+}
+
 static int r871x_wps_start(struct net_device *dev,
                                struct iw_request_info *info,
                                union iwreq_data *wrqu, char *extra)
@@ -3273,7 +3305,7 @@ static int r871x_wps_start(struct net_device *dev,
         uintRet = copy_from_user( ( void* ) &u32wps_start, pdata->pointer, 4 );
 
 	if((padapter->bDriverStopped) || (pdata==NULL))
-	{               
+	{                
 		ret= -EINVAL;
 		goto exit;
 	}		
@@ -3773,7 +3805,7 @@ static const struct iw_priv_args r8711_private_args[] =
 	{
 		SIOCIWFIRSTPRIV + 0x5,
 		IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "setpid"
-	},
+	}, 
 	{
 		SIOCIWFIRSTPRIV + 0x6,
 		IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "wps_start"
@@ -3805,7 +3837,11 @@ static const struct iw_priv_args r8711_private_args[] =
 		IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "wps_assoc_req_ie"
 	},
 #endif
-
+	,
+	{
+		SIOCIWFIRSTPRIV + 0x7,
+		IW_PRIV_TYPE_INT | IW_PRIV_SIZE_FIXED | 1, 0, "chplan"
+	}
 };
 
 static iw_handler r8711_private_handler[] =
@@ -3829,7 +3865,7 @@ static iw_handler r8711_private_handler[] =
 	r871x_wx_set_mtk_wps_probe_ie,
 	r871x_wx_set_mtk_wps_ie,
 #endif
-
+	r871x_set_chplan,
 };
 
 #if WIRELESS_EXT >= 17

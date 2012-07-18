@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
  *
  *
- ******************************************************************************/
+ ******************************************************************************/ 
 
 
 #define _OSDEP_SERVICE_C_
@@ -163,7 +163,7 @@ void _init_listhead(_list *list)
 
 
 /*
-For the following list_xxx operations,
+For the following list_xxx operations, 
 caller must guarantee the atomic context.
 Otherwise, there will be racing condition.
 */
@@ -291,7 +291,7 @@ u32 _down_sema(_sema *sema)
 
 #ifdef PLATFORM_OS_CE
 	if(WAIT_OBJECT_0 == WaitForSingleObject(*sema, INFINITE ))
-		return _SUCCESS;
+		return _SUCCESS; 
 	else
 		return _FAIL;
 #endif
@@ -302,9 +302,11 @@ u32 _down_sema(_sema *sema)
 void	_rtl_rwlock_init(_rwlock *prwlock)
 {
 #ifdef PLATFORM_LINUX
-
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,37))
 	init_MUTEX(prwlock);
-
+#else
+	sema_init(prwlock, 1);
+#endif
 #endif
 #ifdef PLATFORM_OS_XP
 
@@ -456,7 +458,7 @@ u32	get_current_time(void)
 
 	LARGE_INTEGER	SystemTime;
 	NdisGetCurrentSystemTime(&SystemTime);
-	return (u32)(SystemTime.LowPart);// count of 100-nanosecond intervals
+	return (u32)(SystemTime.LowPart);// count of 100-nanosecond intervals 
 
 #endif
 	
@@ -469,7 +471,7 @@ void sleep_schedulable(int ms)
 #ifdef PLATFORM_LINUX
 
     u32 delta;
-   
+    
     delta = (ms * HZ)/1000;//(ms)
     if (delta == 0) {
         delta = 1;// 1 ms
@@ -532,7 +534,7 @@ void mdelay_os(int ms)
 
 #ifdef PLATFORM_LINUX
 
-   	mdelay((unsigned long)ms);
+   	mdelay((unsigned long)ms); 
 
 #endif	
 	
@@ -549,7 +551,7 @@ void udelay_os(int us)
 
 #ifdef PLATFORM_LINUX
 
-      udelay((unsigned long)us);
+      udelay((unsigned long)us); 
 
 #endif	
 	

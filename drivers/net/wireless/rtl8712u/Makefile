@@ -24,7 +24,7 @@ CONFIG_PLATFORM_MSTAR389        =       n
 CONFIG_PLATFORM_ARM_TCC8900     =       n
 
 CONFIG_MLME_EXT                 =       n
-CONFIG_DRVEXT_MODULE    = n
+CONFIG_DRVEXT_MODULE    = y
 
 
 ifeq ($(CONFIG_RTL8711), y)

@@ -16,7 +16,7 @@
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110, USA
  *
  *
- ******************************************************************************/
+ ******************************************************************************/ 
 #define _RTL871X_CMD_C_
 
 #include <drv_conf.h>
@@ -579,6 +579,44 @@ _func_enter_;
 	_memcpy(pbsetdataratepara->datarates, rateset, NumRates);
 #endif
 	enqueue_cmd(pcmdpriv, ph2c);
+exit:
+
+_func_exit_;
+
+	return res;
+}
+
+u8 set_chplan_cmd(_adapter *padapter, int chplan)
+{
+	struct cmd_obj		*ph2c;
+	struct SetChannelPlan_param *psetchplanpara;
+	struct cmd_priv		*pcmdpriv = &padapter->cmdpriv;
+	u8 res = _SUCCESS;
+
+_func_enter_;
+
+	ph2c = (struct cmd_obj*)_malloc(sizeof(struct cmd_obj));
+	if (ph2c == NULL) {
+		res = _FAIL;
+		goto exit;
+	}
+
+	psetchplanpara= (struct SetChannelPlan_param*)_malloc(sizeof(struct SetChannelPlan_param));
+	if (psetchplanpara== NULL) {
+		_mfree((u8 *) ph2c, sizeof(struct cmd_obj));
+		res = _FAIL;
+		goto exit;
+	}
+
+	init_h2fwcmd_w_parm_no_rsp(ph2c, psetchplanpara, GEN_CMD_CODE(_SetChannelPlan));
+	
+#ifdef MP_FIRMWARE_OFFLOAD
+
+#else
+	psetchplanpara->ChannelPlan= chplan;
+#endif
+	enqueue_cmd(pcmdpriv, ph2c);
+
 exit:
 
 _func_exit_;
@@ -1605,7 +1643,7 @@ _func_enter_;
 		goto exit;
 	}
 	
-	pdrvintcmd_param = (struct drvint_cmd_parm*)_malloc(sizeof(struct drvint_cmd_parm));
+	pdrvintcmd_param = (struct drvint_cmd_parm*)_malloc(sizeof(struct drvint_cmd_parm)); 
 	if(pdrvintcmd_param==NULL){
 		_mfree((unsigned char *)ph2c, sizeof(struct cmd_obj));
 		res= _FAIL;
@@ -1738,8 +1776,8 @@ _func_enter_;
 		if(!psta)
 		{
 			psta = alloc_stainfo(&padapter->stapriv, pnetwork->MacAddress);
-			if (psta == NULL)
-			{
+			if (psta == NULL) 
+			{ 
 				RT_TRACE(_module_rtl871x_cmd_c_,_drv_err_,("\nCan't alloc sta_info when createbss_cmd_callback\n"));
 				goto createbss_cmd_fail ;
 			}
