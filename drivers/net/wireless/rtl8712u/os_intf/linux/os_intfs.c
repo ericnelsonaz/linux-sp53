@@ -449,7 +449,7 @@ u8 init_default_value(_adapter *padapter)
 	
 
 	//mlme_priv
-	pmlmepriv->passive_mode=1; // 1: active, 0: pasive. Maybe someday we should rename this varable to "active_mode" (Jeff)
+	pmlmepriv->passive_mode=0; // 1: active, 0: pasive. Maybe someday we should rename this varable to "active_mode" (Jeff)
 	
 	//qos_priv
 	//pmlmepriv->qospriv.qos_option = pregistrypriv->wmm_enable;

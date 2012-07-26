@@ -73,7 +73,7 @@ _func_enter_;
 	pmlmepriv->pscanned = NULL;
 	pmlmepriv->fw_state = 0;
 	pmlmepriv->cur_network.network.InfrastructureMode = Ndis802_11AutoUnknown;
-	pmlmepriv->passive_mode=1; // 1: active, 0: pasive. Maybe someday we should rename this varable to "active_mode" (Jeff)
+	pmlmepriv->passive_mode=0; // 1: active, 0: pasive. Maybe someday we should rename this varable to "active_mode" (Jeff)
 
 	_spinlock_init(&(pmlmepriv->lock));
 	_init_queue(&(pmlmepriv->free_bss_pool));

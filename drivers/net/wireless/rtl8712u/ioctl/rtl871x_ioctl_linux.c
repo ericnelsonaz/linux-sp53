@@ -1483,7 +1483,7 @@ static int r871x_wx_set_priv(struct net_device *dev,
 		//Set scan type to active
 		//OK if successful
 		struct	mlme_priv	*pmlmepriv = &(padapter->mlmepriv);
-		pmlmepriv->passive_mode=1;
+		pmlmepriv->passive_mode=0;
 		sprintf(ext, "OK");
 		
 	}else if(0 == strcasecmp(ext,"SCAN-PASSIVE")){
